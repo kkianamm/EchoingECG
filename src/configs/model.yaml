@@ -1,0 +1,15 @@
+ecg_encoder:
+  numleads: 12
+  init_dim: 96
+  factor_dim: [2, 4, 8, 16]
+  embed_size: 512
+  var_norm: false
+  mean_norm: true
+    
+text_encoder:
+  embed_size: 512
+  var_norm: false
+  mean_norm: true
+  gpo_dim: 32
+
+embed_size: 512
