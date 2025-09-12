@@ -1,37 +1,39 @@
+from typing import Any
+
 import pandas as pd
 import torch
 from torch.utils.data import DataLoader
 from tqdm.auto import tqdm
 from transformers import pipeline
 
-from datasets import Dataset
 
-
-def get_first_n_words(text, n=1000):
+def get_first_n_words(text: str, n: int = 1000) -> str:
     """Get the first n words of the text"""
     words = text.split()
     return " ".join(words[:n])
 
 
-def preprocess_data(examples):
+def preprocess_data(examples: dict) -> dict[str, str]:
     sup_text = get_first_n_words(examples["text"], n=1000)
-    clinical_note = f"""
-Given the clinical note, if patient had a Transthoracic echocardiogram (TTE), then extract only the text related to the TTE or return nothing. Clinical Note: {sup_text}
-"""
+    clinical_note = (
+        f"\nGiven the clinical note, if patient had a Transthoracic echocardiogram (TTE), "
+        f"then extract only the text related to the TTE or return nothing. "
+        f"Clinical Note: {sup_text}\n"
+    )
     return {"clinical_note": clinical_note}
 
 
 def extract_echo_labels(
-    input_csv,
-    output_csv,
-    model_name,
-    text_column="text",
-    discharge_column="discharge_text",
-    batch_size=1,
-    max_length=4000,
-    min_length=30,
-    device=None,
-):
+    input_csv: str,
+    output_csv: str,
+    model_name: str,
+    dataset: Any,
+    discharge_column: str = "discharge_text",
+    batch_size: int = 1,
+    max_length: int = 4000,
+    min_length: int = 30,
+    device: str | int | None = None,  # type: ignore[valid-type] (torch typing issue
+) -> pd.DataFrame:
     """
     Extract echo labels from clinical notes using a summarization model.
     Args:
@@ -46,8 +48,6 @@ def extract_echo_labels(
         device (int or str, optional): Device for model (e.g., CUDA device index).
     """
     df = pd.read_csv(input_csv)
-    unique_texts = df[text_column].unique()
-    dataset = Dataset.from_dict({"text": unique_texts})
     processed_dataset = dataset.map(preprocess_data, batched=False)
     dataloader = DataLoader(processed_dataset, batch_size=batch_size, shuffle=False)
 

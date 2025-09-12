@@ -29,7 +29,7 @@ class MIMIC_ECGDataset(Dataset):
         self.length = len(self.metadata)
 
         self.tokenizer = AutoTokenizer.from_pretrained(
-            "/cluster/projects/mcintoshgroup/Trained_Models/bioBERT",
+            "dmis-lab/biobert-v1.1",
             padding_side="right",
         )
 

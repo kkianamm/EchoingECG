@@ -5,18 +5,14 @@ from src.model.gpo import GPO, l2norm
 
 
 class ProbEncoderTextBert(nn.Module):
-    def __init__(
-        self, embed_size, var_norm=False, mean_norm=True, gpo_dim=32, **kwargs
-    ):
+    def __init__(self, embed_size, var_norm=False, mean_norm=True, gpo_dim=32, **kwargs):
         super().__init__()
         """ Language Model with BERT (from VSE infty)
         original code: https://github.com/woodfrog/vse_infty/blob/master/lib/encoders.py
         """
         self.embed_size = embed_size
 
-        self.backbone = BertModel.from_pretrained(
-            "/cluster/projects/mcintoshgroup/Trained_Models/bioBERT/"
-        )
+        self.backbone = BertModel.from_pretrained("dmis-lab/biobert-v1.1")
         backbone_embed_dim = self.backbone.config.hidden_size
         self.linear = nn.Linear(backbone_embed_dim, embed_size)
         self.gpool = GPO(gpo_dim, gpo_dim)
