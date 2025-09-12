@@ -1,0 +1,10 @@
+mimic_ecg:
+    root_path: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECG/raw
+    csv_path: web_record_list_text.csv
+    scaler: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECG/raw/ecg_scaler.pkl
+mimic_echo:
+    hdf5_echo_path: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECHO
+    epsilon: 1e-8
+    label_type: lvef_value
+    lvef_threshold: 40
+    scaler: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECG/raw/ecg_scaler.pkl

@@ -1,0 +1,18 @@
+mimic_ecg:
+    root_path: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECG/raw
+    csv_path: web_record_list_text.csv
+    scaler: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECG/raw/ecg_scaler.pkl
+music_ecg:
+    csv_path: /cluster/projects/mcintoshgroup/publicData/MUSIC_ECG/subject-info-processed_3lead_idx_split.csv
+    hdf5_path: /cluster/projects/mcintoshgroup/publicData/MUSIC_ECG/all_patients_leadsV3_idx.h5
+    y_column: slvh
+    base_Hz: 500
+    target_Hz: 100
+    length: 1000
+    scaler: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECG/raw/ecg_scaler.pkl
+mimic_echo:
+    hdf5_echo_path: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECHO
+    epsilon: 1e-8
+    label_type: lvef_value
+    lvef_threshold: 40
+    scaler: /cluster/projects/mcintoshgroup/publicData/MIMIC-ECG/raw/ecg_scaler.pkl
