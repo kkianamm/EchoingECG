@@ -47,7 +47,7 @@ def key_padding_collate(
     batch: Sequence[Mapping[str, torch.Tensor]],
     *,
     pad_keys: tuple[str, ...] = PADKEYS,
-    padding_value: int | float = 0,
+    padding_value: Union[int, float] = 0,
 ) -> dict[str, torch.Tensor]:
     out: dict[str, torch.Tensor] = {}
     keys = set(batch[0].keys())  # assume consistent keys for this dataset
