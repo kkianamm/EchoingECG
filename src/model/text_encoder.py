@@ -1,18 +1,28 @@
+from typing import Any
+
+import torch
 import torch.nn as nn
-from transformers import BertModel
+from transformers import AutoModel
 
 from src.model.gpo import GPO, l2norm
 
 
 class ProbEncoderTextBert(nn.Module):
-    def __init__(self, embed_size, var_norm=False, mean_norm=True, gpo_dim=32, **kwargs):
+    def __init__(
+        self,
+        embed_size: int,
+        var_norm: bool = False,
+        mean_norm: bool = True,
+        gpo_dim: int = 32,
+        **kwargs: dict,
+    ) -> None:
         super().__init__()
         """ Language Model with BERT (from VSE infty)
         original code: https://github.com/woodfrog/vse_infty/blob/master/lib/encoders.py
         """
         self.embed_size = embed_size
 
-        self.backbone = BertModel.from_pretrained("dmis-lab/biobert-v1.1")
+        self.backbone = AutoModel.from_pretrained("dmis-lab/biobert-v1.1")
         backbone_embed_dim = self.backbone.config.hidden_size
         self.linear = nn.Linear(backbone_embed_dim, embed_size)
         self.gpool = GPO(gpo_dim, gpo_dim)
@@ -22,10 +32,12 @@ class ProbEncoderTextBert(nn.Module):
         self.mean_norm = mean_norm
 
     @property
-    def get_embed_dim(self):
+    def get_embed_dim(self) -> int:
         return self.embed_size
 
-    def forward(self, x, attention_mask, lengths):
+    def forward(
+        self, x: torch.Tensor, attention_mask: torch.Tensor, lengths: torch.Tensor
+    ) -> dict[str, torch.Tensor | Any]:
         """Handles variable size captions"""
         # Embed word ids to vectors
         # bert_attention_mask = (x != 0).float()

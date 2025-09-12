@@ -22,7 +22,7 @@ DICT_LOSS = {
 }
 
 
-def get_loss_fn(loss_config: dict):  # type: ignore
+def get_loss_fn(loss_config: dict) -> ClosedFormSampledDistanceLoss | InfoNCELoss:  # type: ignore
     """Get the loss function based on the loss configuration."""
     loss_name = loss_config.get("loss_name")
     assert loss_name in list(DICT_LOSS.keys()), f"Unknown loss function: {loss_name}"

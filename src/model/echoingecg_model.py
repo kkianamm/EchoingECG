@@ -18,6 +18,7 @@ class EchoingECG(nn.Module):
         self.ecg_encoder: ProbXResNet1D = prob_xresnet1d101(**ecgencoder_cfg)
         self.text_encoder: ProbEncoderTextBert = ProbEncoderTextBert(**textencoder_cfg)
         self.embed_size = model_cfg.get("embed_size")
+        assert self.embed_size is not None, "embed_size must be specified in model_cfg"
         assert self.embed_size == self.ecg_encoder.embed_size == self.text_encoder.embed_size, (
             "make sure embeddings are consistent between encoders!"
         )
@@ -28,18 +29,20 @@ class EchoingECG(nn.Module):
     def get_embed_size(self) -> int:
         return self.embed_size
 
-    def encode_ecg(self, ecg, **kwargs) -> dict[str, torch.Tensor]:
+    def encode_ecg(self, ecg: torch.Tensor, **kwargs: dict) -> dict[str, torch.Tensor]:
         return self.ecg_encoder(ecg)
 
-    def encode_text(self, text, attention_mask, **kwargs) -> dict[str, torch.Tensor]:
+    def encode_text(
+        self, text: torch.Tensor, attention_mask: torch.Tensor, **kwargs: dict
+    ) -> dict[str, torch.Tensor]:
         try:
             lengths = attention_mask.squeeze().sum(dim=1)
-        except:
+        except Exception:
             lengths = attention_mask.sum(dim=1)
         assert lengths is not None, "make sure to pass attention_mask in dict"
         return self.text_encoder(text, attention_mask=attention_mask, lengths=lengths)
 
-    def pass_embeddings(self, modality, **kwargs) -> dict[str, torch.Tensor]:
+    def pass_embeddings(self, modality: str, **kwargs: dict) -> dict[str, torch.Tensor]:
         ENCODE_FN = self.encode_dict[modality]
         return ENCODE_FN(**kwargs)
 
