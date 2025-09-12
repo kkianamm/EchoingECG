@@ -2,9 +2,9 @@ import cv2
 import numpy as np
 import pydicom
 from pydicom.pixel_data_handlers import convert_color_space
+from typing import Optional
 
-
-def get_video_from_dicom(file_path: str) -> np.ndarray | None:
+def get_video_from_dicom(file_path: str) -> Optional[np.ndarray]:
     try:
         dicom_data = pydicom.dcmread(file_path)
         minx = dicom_data[(0x0018, 0x6011)][0][(0x0018, 0x6018)].value
