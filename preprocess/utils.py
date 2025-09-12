@@ -1,8 +1,10 @@
+from typing import Optional
+
 import cv2
 import numpy as np
 import pydicom
 from pydicom.pixel_data_handlers import convert_color_space
-from typing import Optional
+
 
 def get_video_from_dicom(file_path: str) -> Optional[np.ndarray]:
     try:
@@ -43,7 +45,7 @@ def process_dicom(
     row: dict,
 ) -> tuple[str, np.ndarray] | tuple[str, None]:
     file_path = row["dicom_filepath"]
-    # If 'row' is a numpy array, use .item() or proper indexing; if it's a dict or pandas Series, keep as is.
+    # If 'row' is a numpy array, use .item() or proper indexing; if it's a dict or pandas Series.
     study_id = row["newidentifier"]
 
     # Process the DICOM file
