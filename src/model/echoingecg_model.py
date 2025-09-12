@@ -8,7 +8,7 @@ MODALITY_KEYS: list[str] = ["ecg", "text"]
 
 
 class EchoingECG(nn.Module):
-    def __init__(self, model_cfg: dict, **kwargs) -> None:
+    def __init__(self, model_cfg: dict, **kwargs: dict) -> None:
         super().__init__()
         ecgencoder_cfg = model_cfg.get("ecg_encoder")
         textencoder_cfg = model_cfg.get("text_encoder")
@@ -18,11 +18,9 @@ class EchoingECG(nn.Module):
         self.ecg_encoder: ProbXResNet1D = prob_xresnet1d101(**ecgencoder_cfg)
         self.text_encoder: ProbEncoderTextBert = ProbEncoderTextBert(**textencoder_cfg)
         self.embed_size = model_cfg.get("embed_size")
-        assert (
-            self.embed_size
-            == self.ecg_encoder.embed_size
-            == self.text_encoder.embed_size
-        ), "make sure embeddings are consistent between encoders!"
+        assert self.embed_size == self.ecg_encoder.embed_size == self.text_encoder.embed_size, (
+            "make sure embeddings are consistent between encoders!"
+        )
 
         self.encode_dict = {"ecg": self.encode_ecg, "text": self.encode_text}
 
@@ -47,9 +45,7 @@ class EchoingECG(nn.Module):
 
     def forward(self, inputs: dict[str, torch.Tensor]) -> dict[str, torch.Tensor]:
         outputs = {}
-        assert isinstance(inputs, dict), (
-            "Inputs must be a dictionary of modality tensors"
-        )
+        assert isinstance(inputs, dict), "Inputs must be a dictionary of modality tensors"
         for modality_key, modality_value in inputs.items():
             if modality_key in MODALITY_KEYS:
                 output = self.pass_embeddings(modality_key, **inputs)

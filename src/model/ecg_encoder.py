@@ -99,7 +99,7 @@ class ProbXResNet1D(XResNet1D):
         return self.embed_size
 
     def cal_out(self, x):
-        pooled_features = self.linear(x.transpose(1, 2)) #batch, l, dim
+        pooled_features = self.linear(x.transpose(1, 2))  # batch, l, dim
         length = torch.tensor([x.size(2)]).to(x.device)
         pooled_features, _ = self.gpool(pooled_features, length)
         if self.mean_norm:
@@ -112,7 +112,7 @@ class ProbXResNet1D(XResNet1D):
         return {"mean": pooled_features, "std": std_pooled_features}
 
     def forward(self, x):
-        ecg_features = self.return_features(x) #batch, dim, l
+        ecg_features = self.return_features(x)  # batch, dim, l
         return self.cal_out(ecg_features)
 
 
