@@ -9,7 +9,6 @@ _*.yaml
 _develop_*.py
 outputs/
 jupyter/*
-*.ipynb
 *.csv 
 third_party/*
 dev_*.py
