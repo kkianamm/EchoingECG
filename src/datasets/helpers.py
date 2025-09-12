@@ -151,6 +151,6 @@ def convert_text(text: str, method: str) -> str:
     return f"Given the data for {method}. The corresponding {method} report is : {text}\n\n."
 
 
-def tokenize_text(temp: str, tokenizer) -> torch.Tensor:  # noqa: ANN001
+def tokenize_text(temp: str, tokenizer) -> tuple[torch.Tensor, torch.Tensor]:  # noqa: ANN001
     output = tokenizer(temp)
     return torch.tensor(output["input_ids"]), torch.tensor(output["attention_mask"])
