@@ -2,6 +2,8 @@
 
 EchoingECG is a probabilistic student-teacher model designed to improve cardiac function prediction from electrocardiograms (ECGs) by distilling knowledge from echocardiograms (ECHO). This approach leverages uncertainty-aware ECG embeddings and ECHO supervision, integrating Probabilistic Cross-Modal Embeddings (PCME++) and ECHO-CLIP, a vision-language pretrained model, to transfer ECHO knowledge into ECG representations.
 
+The EchoingECG model weights are available on HuggingFace: https://huggingface.co/mcintoshML/EchoingECG. Please download and refer to the example Jupyter notebook for loading. 
+
 ## Features
 - ECHO-CLIP knowledge distillation
 - Probabilistic contrastive learning with PCME++
