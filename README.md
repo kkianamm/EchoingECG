@@ -4,6 +4,9 @@ EchoingECG is a probabilistic student-teacher model designed to improve cardiac 
 
 The EchoingECG model weights are available on HuggingFace: https://huggingface.co/mcintoshML/EchoingECG. Please download and refer to the example Jupyter notebook for loading. 
 
+## Note
+**Training code will be made available upon journal extension acceptance. In the meantime, the model inference and weights are made available in this repository and on Huggingface.** 
+
 ## Features
 - ECHO-CLIP knowledge distillation
 - Probabilistic contrastive learning with PCME++
